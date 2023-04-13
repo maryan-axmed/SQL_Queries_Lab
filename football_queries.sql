@@ -46,11 +46,39 @@
 -- AND (hometeam = 'Swansea' or awayteam = 'Swansea');
 
 -- How many draws were there in the `Eredivisie` between 2010 and 2015?
-SELECT COUNT(ftr) as draws_between_2010_and_2015_in_Eredivisie
+-- SELECT COUNT(ftr) as draws_between_2010_and_2015_in_Eredivisie
+-- FROM matches 
+-- WHERE division_code = (
+--     SELECT code 
+--     FROM divisions
+--     WHERE name = 'Eredivisie')
+-- AND season between 2010 AND 2015
+-- ;
+
+-- Select the matches played in the Premier League in order of total goals scored from highest to lowest. When two matches have the same total the match with more home goals should come first.
+
+-- SELECT code 
+-- FROM divisions
+-- WHERE name = 'Premier League';
+
+SELECT DISTINCT id, fthg, ftag
 FROM matches 
 WHERE division_code = (
     SELECT code 
     FROM divisions
-    WHERE name = 'Eredivisie')
-AND season between 2010 AND 2015
-;
+    WHERE name = 'Premier League'
+)
+ORDER BY fthg DESC, ftag DESC;
+
+-- In which division and which season were the most goals scored?
+
+-- SELECT MAX(fthg) as max_hometeam, MAX(ftag) as max_awayteam
+-- FROM matches;
+
+-- SELECT division_code, season
+-- FROM matches
+-- WHERE ftag = 13;
+
+-- SELECT name
+-- FROM divisions
+-- WHERE code ='N1';
