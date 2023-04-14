@@ -5,31 +5,40 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 1) Find all the matches from 2017.
 
 ```sql
-<!-- Copy solution here -->
-
+SELECT * 
+FROM matches
+WHERE season = 2017;
 
 ```
 
 2) Find all the matches featuring Barcelona.
 
 ```sql
-<!-- Copy solution here -->
-
+SELECT * 
+FROM matches
+WHERE hometeam = 'Barcelona'
+OR awayteam = 'Barcelona';
 
 ```
 
 3) What are the names of the Scottish divisions included?
 
 ```sql
-<!-- Copy solution here -->
-
+SELECT name 
+FROM divisions
+WHERE country = 'Scotland';
 
 ```
 
 4) Find the value of the `code` for the `Bundesliga` division. Use that code to find out how many matches Freiburg have played in that division. HINT: You will need to query both tables
 
 ```sql
-<!-- Copy solution here -->
+SELECT COUNT(DISTINCT hometeam) + COUNT(DISTINCT awayteam) as matches_played_in_division
+FROM matches
+WHERE division_code = (
+    SELECT code
+    FROM divisions
+    WHERE name = 'Bundesliga');
 
 
 ```
@@ -37,7 +46,10 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 5) Find the teams which include the word "City" in their name. 
 
 ```sql
-<!-- Copy solution here -->
+
+SELECT DISTINCT hometeam 
+FROM matches
+WHERE LOWER(hometeam) LIKE LOWER('%city%');
 
 
 ```
@@ -45,7 +57,13 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 6) How many different teams have played in matches recorded in a French division?
 
 ```sql
-<!-- Copy solution here -->
+SELECT code 
+FROM divisions
+WHERE country = 'France';
+
+SELECT COUNT(DISTINCT hometeam)
+FROM matches 
+WHERE division_code = 'F1' OR division_code = 'F2';
 
 
 ```
@@ -53,7 +71,10 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 7) Have Huddersfield played Swansea in any of the recorded matches?
 
 ```sql
-<!-- Copy solution here -->
+SELECT COUNT(DISTINCT hometeam), COUNT(DISTINCT awayteam)
+FROM  matches 
+WHERE (hometeam = 'Huddersfield' or awayteam = 'Huddersfield') 
+AND (hometeam = 'Swansea' or awayteam = 'Swansea');
 
 
 ```
@@ -61,8 +82,14 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 8) How many draws were there in the `Eredivisie` between 2010 and 2015?
 
 ```sql
-<!-- Copy solution here -->
-
+SELECT COUNT(ftr) as draws_between_2010_and_2015_in_Eredivisie
+FROM matches 
+WHERE division_code = (
+    SELECT code 
+    FROM divisions
+    WHERE name = 'Eredivisie')
+AND season between 2010 AND 2015
+;
 
 ```
 
@@ -77,7 +104,16 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 10) In which division and which season were the most goals scored?
 
 ```sql
-<!-- Copy solution here -->
+SELECT MAX(fthg) as max_hometeam, MAX(ftag) as max_awayteam
+FROM matches;
+
+SELECT division_code, season
+FROM matches
+WHERE ftag = 13;
+
+SELECT name
+FROM divisions
+WHERE code ='N1';
 
 
 ```
